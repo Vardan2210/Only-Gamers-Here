@@ -1,0 +1,75 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Social Network{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+         <link href="{% static 'network/main_styles.css' %}" rel="stylesheet">
+        <link href="{% static 'network/post_comment_styles.css' %}" rel="stylesheet">
+        <link href="{% static 'network/user_profile.css' %}" rel="stylesheet">
+
+       
+        </head>
+    <body>
+        <nav class="nav-grid bg-light">
+            <a class="network-link" href="{% url 'index'%}">Network</a>
+            <nav class="navbar navbar-expand-md navbar-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                    </svg>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav mr-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'user-profile' user_id=user.id%}"><strong>{{ user.username }}</strong></a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <div class="dropdown" >
+                            <button class="dropbtn">View Post 
+                                </button>
+                            <div class="dropdown-content" display= "none">
+                              
+            
+                      <a class="nav-link" href="{% url 'index'%}">{% trans "All Posts" %}</a>
+                      {% if user.is_authenticated %}
+                      <a class="nav-link" href="{% url 'category' cat="xbox" %}">{% trans "xbox" %}</a>
+                      <a class="nav-link" href="{% url 'category' cat="Playstation" %}">{% trans "Playstation" %}</a>
+                      <a class="nav-link" href="{% url 'category' cat="Mobile" %}">{% trans "Mobile" %}</a>
+                      <a class="nav-link" href="{% url 'category' cat="PC" %}">{% trans "PC" %}</a>
+                      <a class="nav-link" href="{% url 'category' cat="Nintendo Switch" %}">{% trans "Nintendo Switch" %}</a>
+                      {% endif %}
+                      
+                    
+                    </div>
+                        </div>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'following'%}">{% trans "Following" %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">{% trans "Log Out" %}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">{% trans "Log In" %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register' %}">{% trans "Register" %}</a>
+                        </li>
+                    {% endif %}
+                  </ul>
+                </div>
+        </nav>
+        <div class="body">
+            {% block body %}
+            {% endblock %}
+        </div>
+        
+    </body>
+</html>

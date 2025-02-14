@@ -1,0 +1,51 @@
+{% extends "network/layout.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block body %}
+    {% if user.is_authenticated and add_post_available %}
+        <div class="post-form-wrapper">
+            <form action="{% url 'post-comment' action='post' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ post_form.content}}
+                </div>
+                <div class="form-group">
+                    {{ post_form.categ}}
+                </div>
+                
+                <input class="btn btn-primary" type="submit" value='{% trans "Post" %}'>
+            </form>
+        </div>
+    {% endif %}
+
+    {% for post in page_obj.object_list %}
+        {% include "network/post.html"%}
+    {% empty %}
+        <div class="no-posts">
+            {% trans "No posts yet" %}
+        </div>
+    {% endfor %}
+    <div class="pages">
+    <center>
+    {%if page_obj.has_previous %} {# whether the previous page exists #}
+            <a href="?page={{page_obj.previous_page_number}}"> &laquo; </a> {# link to the prev page #}
+        {% endif %}
+        <span>{{page_obj.number}}</span> {# the current page number #}
+        
+        {%if page_obj.has_next %} {# whether the next page exists #}
+            <a href="?page={{page_obj.next_page_number}}">&raquo;</a> {# link to the next page #}
+        {% endif %}
+    <center>    
+{% endblock %}
+    </page>
+{% block script %}
+    <script src="{% static 'post-comment_functions.js' %}"></script>
+    <script src="{% static 'post_functions.js' %}"></script>
+    <script src="{% static 'comment_functions.js' %}"></script>
+    {% if user.is_authenticated %}
+        <script src="{% static 'authenticated.js' %}"></script>
+    {% else %}
+        <script src="{% static 'not_authenticated.js' %}"></script>
+    {% endif %}  
+{% endblock %}

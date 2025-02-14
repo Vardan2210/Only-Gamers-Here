@@ -1,0 +1,29 @@
+{% load static %}
+{% load custom_tags %}
+{% load i18n %}
+{% block extra_css %}
+    <link href="{% static 'network/post_comment_styles.css' %}" rel="stylesheet">    
+    {{ form.media.css }}
+    <link href="{% static 'network/forms.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+        integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I"
+        crossorigin="anonymous">
+{% endblock %}
+
+<div class="comment" id='comment_{{ comment.id }}'>
+    <div class="comment-user-image">
+        <a href="{% url 'user-profile' user_id=comment.user.id %}">
+            <img class="round-picture comment-profile-picture" src="{{ comment.user.profile.image.url }}" title={{ comment.user }} alt="profile picture">
+        </a>
+    </div>
+    <div class="comment-main">
+        <a href="{% url 'user-profile' user_id=comment.user.id %}">{{ comment.user }}</a>
+        <div class="content comment-content short">
+            {{ comment.content}}
+        </div>
+    </div>
+    
+    <div class="comment-date">
+        {{comment.date|timesince|upto:',' }} {% trans "ago" %}
+    </div>
+</div>
